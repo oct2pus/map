@@ -1,28 +1,29 @@
 package main
 
-import "github.com/fogleman/gg"
+import (
+	"fmt"
+	"math/rand"
 
-// Grid is the represents the base image that houses various Bubbles and Lines.
-type Grid struct {
-	DC      *gg.Context
-	X, Y    int
-	Bubbles [](*bubble)
+	"github.com/fogleman/gg"
+)
 
-	Coord [][]bool
-}
+type bubbles map[string](*bubble)
 
-func newGrid(x, y int) Grid {
-	var g Grid
-	g.X = x
-	g.Y = y
-	g.Bubbles = make([]*bubble, 0)
+func (b bubbles) draw(x int, y int) *gg.Context {
+	dc := gg.NewContext(x, y)
+	for key, i := range b {
+		px, py := 0, 0
+		noCollision := false
+		for !noCollision {
+			px, py = rand.Intn(x-i.SizeX)+i.SizeX/2, rand.Intn(y-i.SizeY)+i.SizeY/2
+			fr, fg, fb, fa := dc.Image().At(px, py).RGBA()
 
-	g.Coord = make([][]bool, y) //the initial value of a bool is false
-	for i := range x {
-		g.Coord[i] = make([]bool, x)
+			fmt.Printf("key: %v, keyX: %v, keyY: %v\npx: %v, py: %v\nred: %v, green: %v, blue: %v, alpha: %v\n", key, i.SizeX, i.SizeY, px, py, fr, fg, fb, fa)
+		}
+		dc.DrawImageAnchored(i.DC.Image(), px, py, 0.5, 0.5)
 	}
 
-	return g
+	return dc
 }
 
 type bubble struct {
