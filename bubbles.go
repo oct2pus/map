@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"math/rand"
 
 	"github.com/fogleman/gg"
@@ -15,10 +16,32 @@ func (b bubbles) draw(x int, y int) *gg.Context {
 		px, py := 0, 0
 		noCollision := false
 		for !noCollision {
+			fmt.Printf("===  key: %v\n", key)
+			// the nature of pinging for points is that you can always end up with something
+			// in between points if one is sufficently large and the other is sufficently small.
 			px, py = rand.Intn(x-i.SizeX)+i.SizeX/2, rand.Intn(y-i.SizeY)+i.SizeY/2
-			fr, fg, fb, fa := dc.Image().At(px, py).RGBA()
-
-			fmt.Printf("key: %v, keyX: %v, keyY: %v\npx: %v, py: %v\nred: %v, green: %v, blue: %v, alpha: %v\n", key, i.SizeX, i.SizeY, px, py, fr, fg, fb, fa)
+			switch { // ping 9 points to verify if an different bubble is beneath this one.
+			case !isTransparent(dc.Image(), px-i.SizeX/2, py-i.SizeY/2): //top left
+				noCollision = false
+			case !isTransparent(dc.Image(), px, py-i.SizeY/2): // top
+				noCollision = false
+			case !isTransparent(dc.Image(), px+i.SizeX/2, py-i.SizeY/2): //top right
+				noCollision = false
+			case !isTransparent(dc.Image(), px-i.SizeX/2, py): //center left
+				noCollision = false
+			case !isTransparent(dc.Image(), px, py): //center
+				noCollision = false
+			case !isTransparent(dc.Image(), px+i.SizeX/2, py): //center right
+				noCollision = false
+			case !isTransparent(dc.Image(), px-i.SizeX/2, py+i.SizeY/2): //bottom left
+				noCollision = false
+			case !isTransparent(dc.Image(), px, py+i.SizeY/2): //bottom
+				noCollision = false
+			case !isTransparent(dc.Image(), px+i.SizeX/2, py+i.SizeY/2): //bottom right
+				noCollision = false
+			default:
+				noCollision = true
+			}
 		}
 		dc.DrawImageAnchored(i.DC.Image(), px, py, 0.5, 0.5)
 	}
@@ -90,4 +113,13 @@ func roundTo(base float64, To int) float64 {
 		i++
 	}
 	return float64(i)
+}
+
+func isTransparent(im image.Image, x, y int) bool {
+	r, g, b, a := im.At(x, y).RGBA()
+	fmt.Printf("X: %v, Y: %v\nred: %v, green: %v, blue: %v, alpha: %v\n", x, y, r, g, b, a)
+	if r != 0 || g != 0 || b != 0 || a != 0 {
+		return false
+	}
+	return true
 }
