@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image"
 	"math/rand"
 
@@ -12,11 +11,10 @@ type bubbles map[string](*bubble)
 
 func (b bubbles) draw(x int, y int) *gg.Context {
 	dc := gg.NewContext(x, y)
-	for key, i := range b {
+	for _, i := range b {
 		px, py := 0, 0
 		noCollision := false
 		for !noCollision {
-			fmt.Printf("===  key: %v\n", key)
 			// the nature of pinging for points is that you can always end up with something
 			// in between points if one is sufficently large and the other is sufficently small.
 			px, py = rand.Intn(x-i.SizeX)+i.SizeX/2, rand.Intn(y-i.SizeY)+i.SizeY/2
