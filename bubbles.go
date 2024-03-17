@@ -20,22 +20,34 @@ func (b bubbles) draw(x int, y int) *gg.Context {
 			// the nature of pinging for points is that you can always end up with something
 			// in between points if one is sufficently large and the other is sufficently small.
 			px, py = rand.Intn(x-i.SizeX)+i.SizeX/2, rand.Intn(y-i.SizeY)+i.SizeY/2
-			switch { // ping 9 points to verify if an different bubble is beneath this one.
+			switch { // ping 15 points to verify if an different bubble is beneath this one.
 			case !isTransparent(dc.Image(), px-i.SizeX/2, py-i.SizeY/2): //top left
 				noCollision = false
+			case !isTransparent(dc.Image(), px-i.SizeX/4, py-i.SizeY/4): //top 2/5th
+				noCollision = false
 			case !isTransparent(dc.Image(), px, py-i.SizeY/2): // top
+				noCollision = false
+			case !isTransparent(dc.Image(), px+i.SizeX/4, py-i.SizeY/2): //top 4/5th
 				noCollision = false
 			case !isTransparent(dc.Image(), px+i.SizeX/2, py-i.SizeY/2): //top right
 				noCollision = false
 			case !isTransparent(dc.Image(), px-i.SizeX/2, py): //center left
 				noCollision = false
+			case !isTransparent(dc.Image(), px-i.SizeX/4, py): //center 2/5th
+				noCollision = false
 			case !isTransparent(dc.Image(), px, py): //center
+				noCollision = false
+			case !isTransparent(dc.Image(), px+i.SizeX/4, py): //center 4/5th
 				noCollision = false
 			case !isTransparent(dc.Image(), px+i.SizeX/2, py): //center right
 				noCollision = false
 			case !isTransparent(dc.Image(), px-i.SizeX/2, py+i.SizeY/2): //bottom left
 				noCollision = false
+			case !isTransparent(dc.Image(), px-i.SizeX/4, py+i.SizeY/2): //bottom 2/5th
+				noCollision = false
 			case !isTransparent(dc.Image(), px, py+i.SizeY/2): //bottom
+				noCollision = false
+			case !isTransparent(dc.Image(), px+i.SizeX/4, py+i.SizeY/2): //bottom 4/5th
 				noCollision = false
 			case !isTransparent(dc.Image(), px+i.SizeX/2, py+i.SizeY/2): //bottom right
 				noCollision = false
