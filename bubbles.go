@@ -129,7 +129,6 @@ func roundTo(base float64, To int) float64 {
 
 func isTransparent(im image.Image, x, y int) bool {
 	r, g, b, a := im.At(x, y).RGBA()
-	fmt.Printf("X: %v, Y: %v\nred: %v, green: %v, blue: %v, alpha: %v\n", x, y, r, g, b, a)
 	if r != 0 || g != 0 || b != 0 || a != 0 {
 		return false
 	}
