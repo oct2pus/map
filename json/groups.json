@@ -1,0 +1,24 @@
+{
+    "groups": [ 
+        {
+            "name": "Lobby A",
+            "rooms": [0]
+        },
+        {
+            "name": "Lobby B",
+            "rooms": [1]
+        },
+        {
+            "name": "Lobby C",
+            "rooms": [2]
+        },
+        {
+            "name": "Lobby D",
+            "rooms": [3]
+        },
+        {
+            "name": "Lobby E",
+            "rooms": [4]
+        },
+    ]
+}
